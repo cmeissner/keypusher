@@ -1,0 +1,175 @@
+#!/bin/bash
+
+PS4='$0.$LINENO: >'
+
+CONF_FILE=/etc/keypusher/keypusher.conf
+
+test -f $CONF_FILE && source $CONF_FILE
+
+declare -a users
+declare -a userkeys
+declare -a hostmap
+
+TMP_DIR=$(mktemp -d --tmpdir=/tmp/ kp.XXXXXXXXXX)
+HOSTMAP="$TMP_DIR/host.map"
+USERMAP="$TMP_DIR/user.map"
+
+if [ $# -gt 0 ]
+then
+	touch $HOSTMAP
+	_g="${1}" && shift
+	while (($#))
+	do
+		_g="$_g|${1}" && shift
+	done
+	egrep "$_g" $_h_maps | cut -d ":" -f 2 | sort -u > $HOSTMAP
+	egrep "$_g" $_u_maps | cut -d ":" -f 2,3 | sort -u > $USERMAP
+else
+	echo $_h_maps
+	echo $_u_maps
+	cat $_h_maps > $HOSTMAP
+	cat $_u_maps > $USERMAP
+fi
+
+eval $(ssh-agent) >& /dev/null
+
+echo -n "Adding pub key to ssh-agent ... "
+if ssh-add ${SSH_KEY%%.pub} >& /dev/null
+then
+	echo "success"
+else
+	echo "failed"
+	exit 1
+fi
+
+function houseKeeper(){
+	echo -n "cleanup temporary directory ... "
+	if rm -R $TMP_DIR
+	then
+		echo "success"
+	else
+		echo "failed"
+		exit 1
+	fi
+}
+
+function readMappings(){
+	# read possible local machine users into array
+	echo -n "read machine users configuration ... "
+	users=($(ls $CONF_DIR/users/))
+	echo "done"
+
+	# read present userkeys into array
+	echo -n "read real user names ... "
+	userkeys=($(ls $CONF_DIR/userkeys/))
+	echo "done"
+
+	# read host.map into array
+	# this file conatins information which user exists on which machine
+	# format: user@host
+	echo -n "read host maps "
+	while read 
+	do	
+		grep -q -e "^#" <<< $REPLY && continue
+		grep -q -e "^$" <<< $REPLY && continue
+		hostmap[${#hostmap[@]}]=$REPLY
+		echo -n "."
+	done < $HOSTMAP
+	echo " done"
+}
+
+function createKeyrings(){
+	umask 077
+	for ((i=0;i<${#users[@]};i++))
+	do
+		echo $(cat $CONF_DIR/keypusher.pub) >> $TMP_DIR/${users[$i]}.ring
+		while read rp
+		do	
+			test -f $CONF_DIR/userkeys/${rp}.pub && echo $(cat $CONF_DIR/userkeys/${rp}.pub) >> $TMP_DIR/${users[$i]}.ring
+		done < $CONF_DIR/users/${users[$i]}
+	done
+	echo "$(ls $TMP_DIR/*.ring | wc -w) rings created sucessfully"
+}
+
+function doHostAuth(){
+	echo "cleanup old auth data and copy new"
+	for connect in "${hostmap[@]}"
+	do
+		_u=${connect%%@*}
+		_h=${connect##*@}
+		echo -e "\t* working on ${connect##*@} ... "
+		$SCP_CMD $CONF_DIR/scripts/* ${connect}:/tmp/ >& /dev/null
+		for script in $CONF_DIR/scripts/* 
+		do
+			s=$(basename $script)
+			echo -n -e "\t\t + running $s on ${connect##*@} ... "
+			if $SSH_CMD $connect /tmp/$s
+			then
+				echo "success"
+			else
+				echo "failed"
+			fi
+		done
+
+		echo -n -e "\t* Adding user '$_u' on $_h ... "
+		if [[ -f $TMP_DIR/$_u.ring ]]
+		then
+			if $SCP_CMD $TMP_DIR/$_u.ring $connect:.ssh/authorized_keys >& /dev/null
+			then
+				echo "success"
+			else
+				echo "failed"
+			fi
+		else
+			echo "skipping, no keyring for user $_u"
+			continue
+		fi
+
+		echo -e "\tdone"
+	done
+	echo "done"
+}
+
+function addExtraPermissions(){
+	OIFS=$IFS
+	IFS=":"
+	echo "copy userkeys for extra permissions ..."
+	while read user host
+	do
+		grep -q -e "^#" <<< $user && continue
+		grep -q -e "^$" <<< $user && continue	
+		echo -n -e "\t* Adding user '$user' on ${host##*@} ... "
+		if [[ -f $CONF_DIR/userkeys/$user.pub ]]
+		then
+			if $SSH_COPY -i $CONF_DIR/userkeys/$user.pub $host 1> /dev/null
+			then
+				echo "success"
+			else	
+				echo "failed"
+			fi
+		else
+			echo "skipping, no pub key present"
+			continue
+		fi
+	done < $USERMAP
+	echo "done"
+	IFS=$OIFS
+}
+
+trap houseKeeper ERR EXIT
+
+readMappings
+createKeyrings
+doHostAuth
+addExtraPermissions
+
+echo -n "Removing pub key from ssh-agent ... "
+if ssh-add -d ${SSH_KEY%%.pub} >& /dev/null
+then
+	echo "success"
+else
+	echo "failed"
+	exit 1
+fi
+
+kill $SSH_AGENT_PID
