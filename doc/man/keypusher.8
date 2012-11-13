@@ -1,0 +1,21 @@
+.TH KEYPUSHER 8 "November 2012" BASHTOOLS
+
+.SH NAME
+keypusher - install a known public keys in remote machines authorized_keys file
+
+.SH SYNOPSIS
+keypusher [ hostname | username |
+.B
+regex
+]
+
+.SH DESCRIPTION
+keypusher will help you to distribute ssh pubkeys of your employees and partners to many systems. You can redistribute all keys to all machines or you can send keys
+only to single systems or systems which matches to a given regex. keypusher is completly written in bash. So feel free to improve it or to develop new features.
+
+.SH EXAMPLES
+foo
+
+.SH SEE ALSO
+keypusher.conf(5), ssh-copy-id(1), sshd(8)
+
