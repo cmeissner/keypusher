@@ -1,0 +1,21 @@
+.TH USER.MAP 5 "November 2012" BASHTOOLS
+
+.SH NAME
+user.map - keypusher configuration File
+
+.SH SYNOPSIS
+/etc/keypusher/maps/user.map
+
+.SH DESCRIPTION
+Here will defined which extra keys should be added to the specified posix user. Each line will save one key-, user-, host-combination. key and user will delimited by ':'. user and host will delimited by '@'. Empty lines and lines which begins with '#' will be ignored. 
+
+.SH EXAMPLES
+key1:root@host1.example.com
+key2:user@host1.example.com
+.P
+key3:root@host2
+key1:user@host3
+
+
+.SS SEE ALSO 
+keypusher.conf(5), host.map(5)

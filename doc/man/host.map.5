@@ -1,0 +1,23 @@
+.TH HOST.MAP 5 "November 2012" BASHTOOLS
+
+.SH NAME
+host.map - keypusher configuration File
+
+.SH SYNOPSIS
+/etc/keypusher/maps/host.map
+
+.SH DESCRIPTION
+Here you save information of which posix user will get keyrings from keypusher(8). You can write one user host combination per line. User and host part are delimited by an at sign (@). Empty lines and lines started with '#' will be ignored by keypusher(8). Lines started with '#' can use as comments.
+.P
+The host part can be write as host or as fqdn. If you write only host your search domain will be attached.
+
+.SH EXAMPLES
+root@host1.example.com
+user@host1.example.com
+.P
+root@host2
+user@host3
+
+
+.SS SEE ALSO 
+keypusher.conf(5), user.map(5)
