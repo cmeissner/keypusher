@@ -1,0 +1,80 @@
+.TH KEYPUSHER.CONF 5 "November 2012" BASHTOOLS
+
+.SH NAME
+keypusher.conf - keypusher configuration File
+
+.SH SYNOPSIS
+/etc/keypusher/keypusher.conf
+
+.SH DESCRIPTION
+keypusher(8) reads its main configration from file /etc/keypusher/keypusher.conf. The File contains variables definitions (key value pairs).
+Lines starting with '#' will be ignored and can be used for documentation. Values can enclosed in double quotes ("). Beware in use of single quotes (') because here no expansions will take place.
+
+.SS PREFIX
+In standard environment no value is needed. This is used, when keypusher(8) is installed elsewhere as root (/).
+
+.SS CONF_DIR
+The location of configuration file directory. This Parameter has no influence on the file /etc/keypusher/keypusher.conf.
+
+.P 
+.B Default: 
+$PREFIX/etc/keypusher
+
+.SS CONF_FILE
+This Parameter is obsolete and will be ignored.
+.P 
+.B Default: 
+$CONF_DIR/keypusher.conf
+
+.SS SSH_KEY
+Where keypusher(8) will find its ssh public and private key. You have to give the full name with extension here.
+.P 
+.B Default: 
+"$CONF_DIR/keypusher.pub"
+
+.SS SSH_COPY
+Path to ssh-copy-id(1).
+.P 
+.B Default: 
+"/usr/bin/ssh-copy-id"
+
+.SS SSH_CMD
+Path to ssh(1).
+.P 
+.B Default: 
+"/usr/bin/ssh -i $SSH_KEY"
+
+.SS SCP_CMD
+Path to scp(1).
+.P 
+.B Default: 
+"/usr/bin/scp -i $SSH_KEY -F $PROG_DIR/.ssh/config"
+
+.SS MAP_DIR
+The Directory where map files will be located.
+.P 
+.B Default: 
+"$CONF_DIR/maps"
+
+.SS _h_maps
+Here you can define where keypusher(8) should look for host mappings. 
+
+.P
+If you will use more then one file you have to enclose the value in double quotes ("). The single locations will be delimited by spaces.
+
+.P 
+.B Default: 
+"$MAP_DIR/host.map $MAP_DIR/host.map.d/*.map"
+
+.SS _u_maps
+Here you can define where keypusher(8) should look for user mappings. 
+
+.P
+If you will use more then one file you have to enclose the value in double quotes ("). The single locations will be delimited by spaces.
+
+.P 
+.B Default: 
+"$MAP_DIR/user.map $MAP_DIR/user.map.d/*.map"
+
+.SS SEE ALSO 
+host.map(5), user.map(5)
