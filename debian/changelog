@@ -1,0 +1,29 @@
+keypusher (1.1.2-0ubuntu1) precise; urgency=low
+
+  * added manpage keypusher.8
+
+ -- Christian Meissner <cme@meissner.sh>  Tue, 13 Nov 2012 09:33:59 +0100
+
+keypusher (1.1.1-1ubuntu3) precise; urgency=low
+
+  * added doc folder that holds documentation files while building
+
+ -- Christian Meissner <cme@meissner.sh>  Mon, 12 Nov 2012 16:46:06 +0100
+
+keypusher (1.1.1-1ubuntu2) precise; urgency=low
+
+  * remove unused example files
+
+ -- Christian Meissner <cme@meissner.sh>  Mon, 12 Nov 2012 15:32:42 +0100
+
+keypusher (1.1.1-1ubuntu1) oneiric; urgency=high
+
+  * reinstall ssh regeneration issue fixed
+
+ -- Christian Meissner <cme@meissner.sh>  Fri, 02 Nov 2012 08:44:35 +0100
+
+keypusher (1.1.1-1) oneiric; urgency=low
+
+  * Initial release 
+
+ -- Christian Meissner <cme@meissner.sh>  Thu, 01 Nov 2012 08:39:55 +0100

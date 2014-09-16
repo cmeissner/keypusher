@@ -1,0 +1,20 @@
+Source: keypusher
+Section: admin
+Priority: extra
+Origin: oneiric
+Maintainer: Christian Meissner <cme@meissner.sh>
+Build-Depends: debhelper (>= 8.0.0)
+Standards-Version: 3.9.3
+Homepage: http://blog.meissner.sh
+
+Package: keypusher
+Architecture: all
+Origin: oneiric
+Depends: ${misc:Depends}, bash, openssh-client
+Description: a tool to deliver ssh pubkeys to many systems in one step
+ keypusher will help you to distribute ssh pubkeys of your employees and
+ partners to many systems. You can redistribute all keys to all machines or
+ you can send keys only to single systems or systems which matches to a given
+ regex.
+ keypusher is completly written in bash. So feel free to improve it or to
+ develop new features.

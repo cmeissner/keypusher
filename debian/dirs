@@ -1,0 +1,10 @@
+usr
+usr/sbin
+etc
+etc/keypusher
+etc/keypusher/scripts
+etc/keypusher/maps
+etc/keypusher/maps/host.map.d
+etc/keypusher/maps/user.map.d
+etc/keypusher/users
+etc/keypusher/userkeys

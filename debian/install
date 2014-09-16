@@ -1,0 +1,4 @@
+usr/sbin/keypusher usr/sbin
+etc/keypusher/maps/host.map etc/keypusher/maps
+etc/keypusher/maps/user.map etc/keypusher/maps
+etc/keypusher/keypusher.conf etc/keypusher
