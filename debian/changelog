@@ -1,3 +1,9 @@
+keypusher (1.1.3-0ubuntu1) trusty; urgency=low
+
+  * OIFS should be local in function addExtraPermissions
+
+ -- Christian Meißner (PPA-Build-Key) <cme@meissner.sh>  Tue, 16 Sep 2014 10:21:33 +0200
+
 keypusher (1.1.2-0ubuntu1) precise; urgency=low
 
   * added manpage keypusher.8
