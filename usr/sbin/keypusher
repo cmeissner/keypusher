@@ -131,7 +131,7 @@ function doHostAuth(){
 }
 
 function addExtraPermissions(){
-	OIFS=$IFS
+	local OIFS=$IFS
 	IFS=":"
 	echo "copy userkeys for extra permissions ..."
 	while read user host
