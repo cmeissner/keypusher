@@ -1,7 +1,7 @@
 Source: keypusher
 Section: admin
 Priority: extra
-Origin: oneiric
+Origin: trusty
 Maintainer: Christian Meissner <cme@meissner.sh>
 Build-Depends: debhelper (>= 8.0.0)
 Standards-Version: 3.9.3
@@ -9,7 +9,7 @@ Homepage: http://blog.meissner.sh
 
 Package: keypusher
 Architecture: all
-Origin: oneiric
+Origin: trusty
 Depends: ${misc:Depends}, bash, openssh-client
 Description: a tool to deliver ssh pubkeys to many systems in one step
  keypusher will help you to distribute ssh pubkeys of your employees and
