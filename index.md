@@ -1,37 +1,41 @@
-## Welcome to GitHub Pages
+# keypusher
 
-You can use the [editor on GitHub](https://github.com/cmeissner/keypusher/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+keypusher - install a known public keys in remote machines authorized_keys file
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+```keypusher [ hostname | username | regex ]```
 
-### Markdown
+## Description
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+keypusher  will  help you to distribute ssh pubkeys of your employees and partners to many systems. You can redistribute all keys to all machines or you can
+send keys only to single systems or systems which matches to a given regex. keypusher is completly written in bash. So feel free to improve it or to develop
+new features.
 
-```markdown
-Syntax highlighted code block
+## Files
 
-# Header 1
-## Header 2
-### Header 3
+There  are some files and directories which hold information of public keys, posix users and mappings. There is also a central configuration file which will
+keep some basic settings.
 
-- Bulleted
-- List
+```/etc/keypusher/keypusher.conf``` - basic configuration file
 
-1. Numbered
-2. List
+```/etc/keypusher/userkeys``` - Here you save all your user public keys. The naming format is \<name\>.pub. The \<name\> part is used to reference to a single key  in
+other configuration files.
 
-**Bold** and _Italic_ and `Code` text
+```/etc/keypusher/users```  -  Here  you  can place text files which holds the default mapping of userkeys to a posix user. For each posix user you have to save a
+file with user name as file name.
 
-[Link](url) and ![Image](src)
-```
+## Examples
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+If you want to configre Bob's public key in keypusher you have to place his public key in ```/etc/keypusher/userkeys/bob.pub``` From now it can be  referenced  by  using
+"bob" in all possible config files.
 
-### Jekyll Themes
+On all you system should exist the keys of backup and ceo in authorized_keys file of user root. So you have to write a FIle /etc/keypusher/users/root with
+the following content:
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/cmeissner/keypusher/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+		backup
+		ceo
 
-### Support or Contact
+In ```/etc/keypusher/userkeys``` have to stored the public keys ```backup.pub``` and ```ceo.pub```.
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+## See also
+
+keypusher.conf(5), host.map(5), user.map(5), ssh-copy-id(1), sshd(8)
