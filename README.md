@@ -21,11 +21,11 @@ keep some basic settings.
 other configuration files.
 
 ```/etc/keypusher/users```  -  Here  you  can place text files which holds the default mapping of userkeys to a posix user. For each posix user you have to save a
-file with user name a file name.
+file with user name as file name.
 
 ## Examples
 
-If you will configre Bob's public key in keypusher you have to place his public key in ```/etc/keypusher/userkeys/bob.pub``` From now it can be  referenced  by  using
+If you want to configre Bob's public key in keypusher you have to place his public key in ```/etc/keypusher/userkeys/bob.pub``` From now it can be  referenced  by  using
 "bob" in all possible config files.
 
 On all you system should exist the keys of backup and ceo in authorized_keys file of user root. So you have to write a FIle /etc/keypusher/users/root with
