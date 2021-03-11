@@ -17,7 +17,7 @@ keep some basic settings.
 
 ```/etc/keypusher/keypusher.conf``` - basic configuration file
 
-```/etc/keypusher/userkeys``` - Here you save all your user public keys. The naming format is <name>.pub. The <name> part is used to reference to a single key  in
+```/etc/keypusher/userkeys``` - Here you save all your user public keys. The naming format is \<name\>.pub. The \<name\> part is used to reference to a single key  in
 other configuration files.
 
 ```/etc/keypusher/users```  -  Here  you  can place text files which holds the default mapping of userkeys to a posix user. For each posix user you have to save a
